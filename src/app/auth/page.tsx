@@ -1,11 +1,16 @@
+'use client'
+import { Login } from "@/components/login";
+
 export default function Home() {
+    const login = (email: string, pass: string) => {
+        console.log('email', email)
+        console.log('pass', pass)
+        return 0
+    }
+
     return (
         <main className="h-full">
-            <div className="w-full h-[500px] flex flex-col justify-center  text-center">
-                <h1 className=" text-slate-400 text-3xl font-bold ">
-                    This is page authenticate
-                </h1>
-            </div>
+            <Login login={login} />
         </main>
     )
 }
