@@ -4,21 +4,22 @@ import { useForm } from "react-hook-form"
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
 
-type LoginType = { login: (email: string, pass: string) => {} }
+type SinginType = { singin: (full_name: string, email: string, pass: string) => {} }
 
 type FormData = yup.InferType<typeof schema>;
 
 const schema = yup.object({
+    full_name: yup.string().required(),
     email: yup.string().email('é necessário um email valido!').required('o email é obrigatório!'),
     pass: yup.string().min(5, "a senha não é valida").required('a senha é obrigatória!'),
 }).required();
 
 
-export const Login = ({ login }: LoginType) => {
+export const Singin = ({ singin }: SinginType) => {
     const { register, handleSubmit, formState: { errors }, reset } = useForm<FormData>({ resolver: yupResolver(schema) });
 
     const onSubmit = async (data: FormData) => {
-        await login(data.email, data.pass);
+        await singin(data.full_name, data.email, data.pass);
         reset();
     };
 
@@ -29,6 +30,18 @@ export const Login = ({ login }: LoginType) => {
                 <p className="text-xs text-slate-500">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum aut sit amet consectetur minima.</p>
             </div>
             <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
+
+                <div className="flex flex-col ">
+                    <label htmlFor="full_name" className="text-slate-500 text-[0.75em] tracking-widest">Nome Completo</label>
+                    <input 
+                        type='full_name' 
+                        {...register('full_name')} 
+                        id="full_name"
+                        className=" border-b-2 h-9 focus:outline-none focus:ringfocus:border-b-[1px] focus:border-blue-400 text-slate-700" 
+                    />
+                    {errors.full_name && <span role="alert" className="text-right text-red-500 text-sm">{errors.full_name?.message}</span>}
+                </div>
+
                 <div className="flex flex-col ">
                     <label htmlFor="email" className="text-slate-500 text-[0.75em] tracking-widest">Email</label>
                     <input 
@@ -39,6 +52,7 @@ export const Login = ({ login }: LoginType) => {
                     />
                     {errors.email && <span role="alert" className="text-right text-red-500 text-sm">{errors.email?.message}</span>}
                 </div>
+
                 <div className="flex flex-col">
                     <label 
                         htmlFor="pass" 
@@ -51,16 +65,10 @@ export const Login = ({ login }: LoginType) => {
                         className=" border-b-2 h-9 focus:outline-none focus:ringfocus:border-b-[1px] focus:border-blue-400 text-slate-700" 
                     />
                     {errors.pass && <span role="alert" className="text-right text-red-500 text-sm">{errors.pass?.message}</span>}
-
                 </div>
-                <div className="flex justify-between ">
-                    <div className="flex items-center gap-1">
-                        <input type='checkbox' />
-                        <label htmlFor="remember" className="text-slate-600 text-[.9em]  ">Remember me</label>
 
-                    </div>
-                    <Link href='/auth?forgot-password' className="text-slate-600 text-[0.85em] underline">Forgot Password</Link>
-                </div>
+                
+
                 <button type="submit" className="w-full  py-2 border">Log In</button>
             </form>
         </div>
