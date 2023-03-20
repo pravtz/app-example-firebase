@@ -10,8 +10,8 @@ export const Header = () => {
                 <div className="">
                     <nav className="flex items-center gap-6">
                         <ul className="flex gap-3">
-                            <li><Link href="/auth?login">Login</Link></li>
-                            <li><Link href="/auth?singin">SingIn</Link></li>
+                            <li><Link href="/auth">Login</Link></li>
+                            <li><Link href="/auth/singin">SingIn</Link></li>
                         </ul>
                         <div>
                             <Image className="inline-block h-12 w-12 rounded-full ring-2 ring-white" src={ImageAvatar} alt="image of the user" />

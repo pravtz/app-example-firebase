@@ -31,24 +31,24 @@ export const Login = ({ login }: LoginType) => {
             <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
                 <div className="flex flex-col ">
                     <label htmlFor="email" className="text-slate-500 text-[0.75em] tracking-widest">Email</label>
-                    <input 
-                        type='email' 
-                        {...register('email')} 
+                    <input
+                        type='email'
+                        {...register('email')}
                         id="email"
-                        className=" border-b-2 h-9 focus:outline-none focus:ringfocus:border-b-[1px] focus:border-blue-400 text-slate-700" 
+                        className=" border-b-2 h-9 focus:outline-none focus:ringfocus:border-b-[1px] focus:border-blue-400 text-slate-700"
                     />
                     {errors.email && <span role="alert" className="text-right text-red-500 text-sm">{errors.email?.message}</span>}
                 </div>
                 <div className="flex flex-col">
-                    <label 
-                        htmlFor="pass" 
+                    <label
+                        htmlFor="pass"
                         className="text-slate-500 text-[0.75em] tracking-widest "
                     >Password</label>
-                    <input 
+                    <input
                         id="pass"
-                        type='password'  
-                        {...register('pass')} 
-                        className=" border-b-2 h-9 focus:outline-none focus:ringfocus:border-b-[1px] focus:border-blue-400 text-slate-700" 
+                        type='password'
+                        {...register('pass')}
+                        className=" border-b-2 h-9 focus:outline-none focus:ringfocus:border-b-[1px] focus:border-blue-400 text-slate-700"
                     />
                     {errors.pass && <span role="alert" className="text-right text-red-500 text-sm">{errors.pass?.message}</span>}
 
@@ -59,7 +59,7 @@ export const Login = ({ login }: LoginType) => {
                         <label htmlFor="remember" className="text-slate-600 text-[.9em]  ">Remember me</label>
 
                     </div>
-                    <Link href='/auth?forgot-password' className="text-slate-600 text-[0.85em] underline">Forgot Password</Link>
+                    <Link href='/auth/forgot' className="text-slate-600 text-[0.85em] underline">Forgot Password</Link>
                 </div>
                 <button type="submit" className="w-full  py-2 border">Log In</button>
             </form>
