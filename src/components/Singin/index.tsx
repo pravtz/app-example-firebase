@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form"
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
 
-type SinginType = { singin?: (full_name: string, email: string, pass: string) => {} }
+type SinginType = { singin: (full_name: string, email: string, pass: string) => void}
 
 type FormData = yup.InferType<typeof schema>;
 

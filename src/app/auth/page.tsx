@@ -1,12 +1,25 @@
 'use client'
 import { Login } from "@/components/login";
+import { useUserAuth } from "@/hooks/useUserAuth";
+import { useRouter } from "next/navigation"
 
 export default function Home() {
-    const login = (email: string, pass: string) => {
+    const router = useRouter()
+    const props = useUserAuth()
+
+
+    const login =  (email: string, pass: string) => {
         console.log('email', email)
         console.log('pass', pass)
+        try {
+            props?.signInEmail(email, pass)
+            router.push("/dashboard")
+        } catch (error) {
+            console.error(error)
+        }
         return 0
     }
+
 
     return (
         <main className="h-full">

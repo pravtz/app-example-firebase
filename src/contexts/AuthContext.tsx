@@ -1,16 +1,34 @@
-import { Router } from 'next/router'
+"use client"
 import React, { createContext, useState } from 'react'
 import { getAuth, signOut, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
 import { app } from '../lib/firebaseConfig'
+import type { User } from 'firebase/auth';
 
+type userAuthContenxtType = {
+        user: User | null,
+        loading: Boolean,
+        createUserWithEmailAndPass: (email: string, pass: string) => void,
+        signInEmail: (email: string, pass: string) => void,
+        signOutEmail: () => void,
+        getUser: () => void,
+        isLogIn: () => Boolean,
+}
 
-const AuthContext = createContext()
+const userAuthContext = createContext<userAuthContenxtType | null>(null)
 
-export const AuthProvider({ children }: { children: React.ReactNode }) => {
-    const [user, setUser] = useState(null)
+export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+    const auth = getAuth(app)
+    const [user, setUser] = useState<User | null>(null)
     const [loading, setLoading] = useState(true)
 
-    const auth = getAuth(app);
+    const getUser = () => {
+        try {
+            const getUser = auth.currentUser
+            return getUser
+        } catch (error) {
+            console.error(error)
+        }
+    }
 
     const createUserWithEmailAndPass = ({ email, password }: any) => {
         setLoading(true)
@@ -21,16 +39,16 @@ export const AuthProvider({ children }: { children: React.ReactNode }) => {
                 setUser(userC)
             })
             .catch((error) => {
-                const errorCode = error.code;
-                const errorMessage = error.message;
+                const errorCode = error.code
+                const errorMessage = error.message
                 console.log("error singIn: ", errorCode, errorMessage)
             }).finally(() => setLoading(false))
-    }
-    const signInGoogle = () => { }
+        }
+    
 
-    const signInEmail = () => {
+    const signInEmail = (email: string, password: string) => {
         setLoading(true)
-        signInWithEmailAndPassword(auth, email, password)
+        signInWithEmailAndPassword(auth, email , password)
             .then((userCredential) => {
                 // Signed in
                 const userCred = userCredential.user;
@@ -56,20 +74,25 @@ export const AuthProvider({ children }: { children: React.ReactNode }) => {
         }).finally(() => setLoading(false))
     }
 
+    const isLogIn = () => !!user
+    
+
     return (
-        <AuthContext.Provider value={{
+        <userAuthContext.Provider value={{
             user,
+            getUser,
+            isLogIn,
             loading,
+            createUserWithEmailAndPass,
             signInEmail,
-            signOutEmail,
-            signInGoogle,
-            signOut,
+            signOutEmail
+      
         }}>
             {children}
-        </AuthContext.Provider>
+        </userAuthContext.Provider>
     )
 }
 
-export const AuthConsumer = AuthContext.Consumer
+export const AuthConsumer = userAuthContext.Consumer
 
-export default AuthContext
+export default userAuthContext

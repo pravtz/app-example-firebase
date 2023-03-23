@@ -92,4 +92,30 @@ describe('Login', () => {
         expect(mockLogin).toBeCalledWith("test@mail.com", "password");
 
       });
+      
+      it("should not display error when value is valid", async () => {
+        render(<Login login={mockLogin} />);
+
+        const inputEmail = screen.getByRole('textbox', {name: /email/i})
+        const inputPassword = screen.getByLabelText("Password")
+      
+        fireEvent.input(inputEmail, {
+          target: {
+            value: "test@mail.com"
+          }
+        });
+      
+        fireEvent.input(inputPassword, {
+          target: {
+            value: "password"
+          }
+        });
+      
+        fireEvent.submit(screen.getByRole("button"));
+      
+        await waitFor(() => expect(screen.queryAllByRole("alert")).toHaveLength(0));
+        expect(mockLogin).toBeCalledWith("test@mail.com", "password");
+
+      });
+      
 })

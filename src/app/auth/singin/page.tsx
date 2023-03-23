@@ -1,15 +1,24 @@
 'use client'
 import { Singin } from "@/components/Singin"
+import { useUserAuth } from "@/hooks/useUserAuth"
+import { useRouter } from "next/navigation"
 
 
 export default function SinginPage() {
+    const props = useUserAuth()
+    const router = useRouter()
+    
+    const singin =  (full_name: string, email: string, pass: string) => {
 
-    const singin = (full_name: string, email: string, pass: string) => {
-        console.log('full_name', full_name)
-        console.log('email', email)
-        console.log('pass', pass)
-        return 0
+        try {
+             props?.createUserWithEmailAndPass(email, pass)
+             router.push("/dashboard")
+        } catch (error) {
+            console.error(error)
+        } 
+
     }
+
     return (
         <div>
             <Singin singin={singin} />
