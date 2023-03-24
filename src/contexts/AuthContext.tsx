@@ -3,15 +3,16 @@ import React, { createContext, useState } from 'react'
 import { getAuth, signOut, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
 import { app } from '../lib/firebaseConfig'
 import type { User } from 'firebase/auth';
+import { useRouter } from 'next/navigation'
 
 type userAuthContenxtType = {
-        user: User | null,
-        loading: Boolean,
-        createUserWithEmailAndPass: (email: string, pass: string) => void,
-        signInEmail: (email: string, pass: string) => void,
-        signOutEmail: () => void,
-        getUser: () => void,
-        isLogIn: () => Boolean,
+    user: User | null,
+    loading: Boolean,
+    createUserWithEmailAndPass: (email: string, pass: string) => void,
+    signInEmail: (email: string, pass: string) => void,
+    signOutEmail: () => void,
+    getUser: () => void,
+    isLogIn: () => Boolean,
 }
 
 const userAuthContext = createContext<userAuthContenxtType | null>(null)
@@ -20,6 +21,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const auth = getAuth(app)
     const [user, setUser] = useState<User | null>(null)
     const [loading, setLoading] = useState(true)
+    const router = useRouter()
 
     const getUser = () => {
         try {
@@ -37,23 +39,24 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
                 const userC = userCredential.user;
                 setUser(userC)
+                router.push('/dashboard')
             })
             .catch((error) => {
                 const errorCode = error.code
                 const errorMessage = error.message
                 console.log("error singIn: ", errorCode, errorMessage)
             }).finally(() => setLoading(false))
-        }
-    
+    }
+
 
     const signInEmail = (email: string, password: string) => {
         setLoading(true)
-        signInWithEmailAndPassword(auth, email , password)
+        signInWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
                 // Signed in
                 const userCred = userCredential.user;
                 setUser(userCred)
-                // ...
+                router.push('/dashboard')
             })
             .catch((error) => {
                 const errorCode = error.code;
@@ -69,13 +72,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
         signOut(auth).then(() => {
             console.log("logout successful")
+            router.push('/')
         }).catch((error) => {
             console.log("error logout: ", error)
         }).finally(() => setLoading(false))
     }
 
     const isLogIn = () => !!user
-    
+
 
     return (
         <userAuthContext.Provider value={{
@@ -86,7 +90,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             createUserWithEmailAndPass,
             signInEmail,
             signOutEmail
-      
+
         }}>
             {children}
         </userAuthContext.Provider>

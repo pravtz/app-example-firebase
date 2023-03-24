@@ -8,12 +8,13 @@ export default function Home() {
     const props = useUserAuth()
 
 
-    const login =  (email: string, pass: string) => {
+    const login = (email: string, pass: string) => {
         console.log('email', email)
         console.log('pass', pass)
         try {
             props?.signInEmail(email, pass)
-            router.push("/dashboard")
+            const user = props?.user
+            user && router.push("/dashboard")
         } catch (error) {
             console.error(error)
         }
