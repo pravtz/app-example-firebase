@@ -9,8 +9,6 @@ export default function Home() {
 
 
     const login = (email: string, pass: string) => {
-        console.log('email', email)
-        console.log('pass', pass)
         try {
             props?.signInEmail(email, pass)
             const user = props?.user

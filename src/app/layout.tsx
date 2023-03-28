@@ -1,5 +1,8 @@
 import { Header } from '@/components/header'
 import { AuthProvider } from '@/contexts/AuthContext'
+import { ThemeProvider } from '@/contexts/ThemeContext'
+import { useUserAuth } from '@/hooks/useUserAuth'
+
 import './globals.css'
 
 export const metadata = {
@@ -12,12 +15,19 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
+
+
+  const userAuth = useUserAuth()
+  console.log("userAuthBooton", !!userAuth?.isLogIn())
+
   return (
     <html lang="en">
       <body>
         <AuthProvider>
-          <Header />
-          {children}
+          <ThemeProvider>
+            <Header />
+            {children}
+          </ThemeProvider>
         </AuthProvider>
       </body>
     </html>

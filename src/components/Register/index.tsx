@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form"
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
 
-type SinginType = { singin: (full_name: string, email: string, pass: string) => void}
+type RegisterType = { DataRegister: (full_name: string, email: string, pass: string) => void }
 
 type FormData = yup.InferType<typeof schema>;
 
@@ -15,11 +15,11 @@ const schema = yup.object({
 }).required();
 
 
-export const Singin = ({ singin }: SinginType) => {
+export const Register = ({ DataRegister }: RegisterType) => {
     const { register, handleSubmit, formState: { errors }, reset } = useForm<FormData>({ resolver: yupResolver(schema) });
 
-    const onSubmit = async (data: FormData) => {
-        await singin(data.full_name, data.email, data.pass);
+    const onSubmit = (data: FormData) => {
+        DataRegister(data.full_name, data.email, data.pass);
         reset();
     };
 
