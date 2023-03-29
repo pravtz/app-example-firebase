@@ -1,26 +1,37 @@
 'use client'
 import { settigsPlataform } from "@/config"
-import { createContext, useState } from "react"
+import { createContext, useEffect, useState } from "react"
 
-type ThemeContextType = {
+export type ThemeContextType = {
     isDarkTheme: Boolean,
-    getTheme: () => "lightMode" | 'darkMode',
+    getTheme: () => "light" | 'dark',
     handleToggleTheme: () => void,
-    setModeTheme: (typeModeTheme: "lightMode" | 'darkMode') => void,
+    setModeTheme: (typeModeTheme: "light" | 'dark') => void,
     setDarkModeTheme: () => void,
     setLightModeTheme: () => void,
 }
 
-const ThemeContext = createContext<ThemeContextType | null>(null)
+export const ThemeContext = createContext<ThemeContextType | null>(null)
 
 export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
     const [isDarkTheme, setIsDarkTheme] = useState<Boolean>(settigsPlataform.initialThemeDark)
 
+    useEffect(()=>{
+        const className = "dark";
+        const bodyClass = window.document.body.classList;
+        console.log("bodyClass", bodyClass)
+        if(isDarkTheme){
+            bodyClass.add(className)
+        }else{
+            bodyClass.remove(className)
+        }
+    },[isDarkTheme])
+
     const getTheme = () => {
         if (isDarkTheme) {
-            return 'darkMode'
+            return 'dark'
         } else {
-            return 'lightMode'
+            return 'light'
         }
     }
 
@@ -32,11 +43,11 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
         setIsDarkTheme(false)
     }
 
-    const setModeTheme = (typeModeTheme: "lightMode" | 'darkMode'): void => {
-        if (typeModeTheme == 'lightMode') {
+    const setModeTheme = (typeModeTheme: "light" | 'dark'): void => {
+        if (typeModeTheme == 'light') {
             setIsDarkTheme(false)
         }
-        if (typeModeTheme == 'darkMode') {
+        if (typeModeTheme == 'dark') {
             setIsDarkTheme(true)
         }
     }
