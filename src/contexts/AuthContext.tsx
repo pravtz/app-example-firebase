@@ -5,7 +5,7 @@ import { app } from '../lib/firebaseConfig'
 import type { User } from 'firebase/auth';
 import { useRouter } from 'next/navigation'
 
-type userAuthContenxtType = {
+export type userAuthContenxtType = {
     user: User | null,
     loading: Boolean,
     createUserWithEmailAndPass: (full_name: string, email: string, password: string) => void,
