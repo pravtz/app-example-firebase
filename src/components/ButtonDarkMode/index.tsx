@@ -1,14 +1,15 @@
 import { useColorModeToogle } from "@/hooks/useColorModeToogle"
-import {BsFillMoonFill, BsSunFill} from "react-icons/bs"
+import { BsFillMoonFill, BsSunFill } from "react-icons/bs"
+
 
 export const ButtonDarkMode = () => {
-    const {colorMode, colorModeToogle} = useColorModeToogle()
+    const { colorMode, colorModeToogle } = useColorModeToogle()
 
     return (
-        <button 
+        <button
             onClick={colorModeToogle}
         >
-            {colorMode && colorMode() ==="dark"? <BsFillMoonFill/>: <BsSunFill/>}
+            {colorMode && colorMode() === "dark" ? <BsFillMoonFill /> : <BsSunFill />}
         </button>
     )
 }
